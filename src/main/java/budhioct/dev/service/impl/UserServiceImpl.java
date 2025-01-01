@@ -11,8 +11,11 @@ import budhioct.dev.security.token.TokenType;
 import budhioct.dev.service.UserService;
 import budhioct.dev.utilities.BCrypt;
 import budhioct.dev.utilities.validation.ValidationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -76,6 +79,49 @@ public class UserServiceImpl implements UserService {
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Transactional
+    public UserDTO.LoginResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                throw new RuntimeException("Forbidden, Bearer is null");
+            }
+
+            final String jwt_token = authHeader.substring(7);
+            Token store_token = tokenRepository.findFirstByToken(jwt_token)
+                    .orElseThrow(() -> new RuntimeException("Forbidden, Bearer token is not found"));
+
+            if (store_token.isExpired() || store_token.isRevoked()) {
+                throw new RuntimeException("Forbidden, Bearer token is expired or revoked");
+            }
+
+            UserDTO.LoginResponse data = null;
+            final String user_email = jwtService.extractUsername(jwt_token);
+            if (user_email != null) {
+                User user = this.userRepository.findFirstByEmail(user_email)
+                        .orElseThrow(() -> new RuntimeException("Forbidden, User is not found"));
+                if (jwtService.isTokenValid(jwt_token, user)) {
+                    String accessToken = jwtService.generateToken(user);
+                    String refreshToken = jwtService.generateRefreshToken(user);
+                    long minutes = TimeUnit.MILLISECONDS.toMinutes(jwtExpirationMs);
+                    revokeAllUserTokens(user);
+                    saveUserToken(user, accessToken);
+
+                    data = UserDTO.LoginResponse.builder()
+                            .expiresIn(minutes)
+                            .role(user.getRole())
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .build();
+                }
+            }
+            return data;
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
     private void validatePassword(String rawPassword, String hashedPassword) {

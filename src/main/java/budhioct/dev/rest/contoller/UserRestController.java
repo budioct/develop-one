@@ -4,6 +4,8 @@ import budhioct.dev.dto.UserDTO;
 import budhioct.dev.rest.config.RestResponse;
 import budhioct.dev.service.UserService;
 import budhioct.dev.utilities.Constants;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +27,7 @@ public class UserRestController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<RestResponse.object<UserDTO.RegisterResponse>> register(@RequestBody UserDTO.RegisterRequest request){
+    public ResponseEntity<RestResponse.object<UserDTO.RegisterResponse>> register(@RequestBody UserDTO.RegisterRequest request) {
         UserDTO.RegisterResponse userResponse = userService.register(request);
         RestResponse.object<UserDTO.RegisterResponse> res = RestResponse.object.<UserDTO.RegisterResponse>builder()
                 .data(userResponse)
@@ -46,6 +48,20 @@ public class UserRestController {
                 .data(loginResponse)
                 .status_code(Constants.OK)
                 .message(Constants.AUTH_LOGIN_MESSAGE)
+                .build();
+    }
+
+    @PostMapping(
+            path = "/token/refresh",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public RestResponse.object<UserDTO.LoginResponse> refreshToken(HttpServletRequest request,
+                                                                   HttpServletResponse response) {
+        UserDTO.LoginResponse loginResponse = userService.refreshToken(request, response);
+        return RestResponse.object.<UserDTO.LoginResponse>builder()
+                .status_code(Constants.OK)
+                .message(Constants.AUTH_REFRESH_TOKEN_MESSAGE)
+                .data(loginResponse)
                 .build();
     }
 
