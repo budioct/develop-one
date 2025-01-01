@@ -1,16 +1,28 @@
 package budhioct.dev.service.impl;
 
 import budhioct.dev.dto.UserDTO;
+import budhioct.dev.entity.Token;
 import budhioct.dev.entity.User;
+import budhioct.dev.repository.TokenRepository;
 import budhioct.dev.repository.UserRepository;
+import budhioct.dev.security.jwt.JwtService;
 import budhioct.dev.security.role.Role;
+import budhioct.dev.security.token.TokenType;
 import budhioct.dev.service.UserService;
+import budhioct.dev.utilities.BCrypt;
 import budhioct.dev.utilities.validation.ValidationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +30,13 @@ public class UserServiceImpl implements UserService {
 
     private final ValidationService validation;
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    @Value("${app.jwt.jwtExpirationMs}") private long jwtExpirationMs;
 
-    @Override
+    @Transactional
     public UserDTO.RegisterResponse register(UserDTO.RegisterRequest request) {
         validation.validate(request);
 
@@ -36,4 +52,67 @@ public class UserServiceImpl implements UserService {
 
         return UserDTO.toRegisterResponse(user);
     }
+
+    @Transactional
+    public UserDTO.LoginResponse login(UserDTO.LoginRequest request) {
+        validation.validate(request);
+
+        User user = userRepository.findFirstByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password"));
+
+        validatePassword(request.getPassword(), user.getPassword());
+        authenticateUser(request.getEmail(), request.getPassword());
+
+        String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(jwtExpirationMs);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+
+        return UserDTO.LoginResponse.builder()
+                .expiresIn(minutes)
+                .role(user.getRole())
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    private void validatePassword(String rawPassword, String hashedPassword) {
+        if (!BCrypt.checkpw(rawPassword, hashedPassword)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        }
+    }
+
+    private void authenticateUser(String email, String password) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed");
+        }
+    }
+
+    private void revokeAllUserTokens(User user) {
+        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserTokens.isEmpty()) {
+            return;
+        }
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+    }
+
+    private void saveUserToken(User user, String jwtToken) {
+        Token token = new Token();
+        token.setUser(user);
+        token.setToken(jwtToken);
+        token.setTokenType(TokenType.BEARER);
+        token.setExpired(false);
+        token.setRevoked(false);
+        tokenRepository.save(token);
+    }
+
 }
