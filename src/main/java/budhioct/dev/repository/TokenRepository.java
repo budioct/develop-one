@@ -19,4 +19,7 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
             """)
     List<Token> findAllValidTokenByUser(@Param(value = "user_id" ) Long user_id);
 
+    @Query("select t from Token t where t.expired = false and t.revoked = false")
+    List<Token> findAllValidTokens();
+
 }
