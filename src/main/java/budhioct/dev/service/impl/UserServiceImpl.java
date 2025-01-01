@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,6 +125,27 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
+    public void changePassword(UserDTO.ChangePasswordRequest request, UserDetails userDetails) {
+        validation.validate(request);
+
+        if (userDetails == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+
+        User user = userRepository.findFirstByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized"));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request");
+        }
+
+        validateNewPasswords(request.getNewPassword(), request.getConfirmationPassword(), user.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        userRepository.save(user);
+    }
+
     private void validatePassword(String rawPassword, String hashedPassword) {
         if (!BCrypt.checkpw(rawPassword, hashedPassword)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
@@ -159,6 +181,15 @@ public class UserServiceImpl implements UserService {
         token.setExpired(false);
         token.setRevoked(false);
         tokenRepository.save(token);
+    }
+
+    private void validateNewPasswords(String newPassword, String confirmationPassword, String currentPassword) {
+        if (!newPassword.equals(confirmationPassword)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request");
+        }
+        if (passwordEncoder.matches(newPassword, currentPassword)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password cannot be the same as the current password");
+        }
     }
 
 }

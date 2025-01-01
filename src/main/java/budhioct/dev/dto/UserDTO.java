@@ -61,6 +61,21 @@ public class UserDTO {
         private String password;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class ChangePasswordRequest {
+        @NotBlank
+        @Size(min = 8, max = 255)
+        private String currentPassword;
+        @NotBlank
+        @Size(min = 8, max = 255)
+        private String newPassword;
+        @NotBlank
+        @Size(min = 8, max = 255)
+        private String confirmationPassword;
+    }
+
     public static RegisterResponse toRegisterResponse(User user){
         return RegisterResponse.builder()
                 .email(user.getEmail())
