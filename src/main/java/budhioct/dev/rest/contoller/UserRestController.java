@@ -2,6 +2,7 @@ package budhioct.dev.rest.contoller;
 
 import budhioct.dev.dto.UserDTO;
 import budhioct.dev.rest.config.RestResponse;
+import budhioct.dev.security.config.LogoutService;
 import budhioct.dev.service.UserService;
 import budhioct.dev.utilities.Constants;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRestController {
 
     private final UserService userService;
+    private final LogoutService logoutService;
 
     @PostMapping(
             path = "/register",
@@ -78,6 +81,20 @@ public class UserRestController {
         return RestResponse.object.<String>builder()
                 .status_code(Constants.OK)
                 .message(Constants.AUTH_CHANGE_PASSWORD_MESSAGE)
+                .data("")
+                .build();
+    }
+
+    @PostMapping(
+            path = "/logout"
+    )
+    public RestResponse.object<String> logout(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              Authentication authentication) {
+        logoutService.logout(request, response, authentication);
+        return RestResponse.object.<String>builder()
+                .status_code(Constants.OK)
+                .message(Constants.AUTH_LOGOUT_MESSAGE)
                 .data("")
                 .build();
     }
