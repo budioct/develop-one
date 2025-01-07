@@ -53,4 +53,12 @@ public class ProductServiceImpl implements ProductService {
 
         return ProductDTO.toProductResponse(product);
     }
+
+    @Transactional
+    public void removeProduct(long id) {
+        Product product = productRepository.findFirstById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
+
+        productRepository.delete(product);
+    }
 }

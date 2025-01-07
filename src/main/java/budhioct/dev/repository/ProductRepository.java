@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findFirstByKode(String kode);
+    Optional<Product> findFirstById(long id);
 }

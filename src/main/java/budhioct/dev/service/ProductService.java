@@ -8,5 +8,6 @@ public interface ProductService {
 
     List<ProductDTO.ProductResponse> listProduct();
     ProductDTO.ProductResponse createProduct(ProductDTO.ProductRequest request);
+    void removeProduct(long id);
 
 }

@@ -51,4 +51,18 @@ public class ProductRestController {
         return new ResponseEntity<>(build, HttpStatus.CREATED);
     }
 
+    @DeleteMapping(
+            path = "/{id}/remove",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PreAuthorize("hasAnyAuthority('user:read', 'admin:read')")
+    public RestResponse.object<String> removeProduct(@PathVariable(value = "id" ) long id) {
+        productService.removeProduct(id);
+        return RestResponse.object.<String>builder()
+                .data("")
+                .status_code(Constants.OK)
+                .message(Constants.DELETE_MESSAGE)
+                .build();
+    }
+
 }
