@@ -34,7 +34,7 @@ public class Product {
     private Integer harga;
 
     @Column(name = "is_ready")
-    private boolean ready;
+    private Boolean isReady;
 
     @Column(name = "gambar", columnDefinition = "text")
     private String gambar;

@@ -7,5 +7,6 @@ import java.util.List;
 public interface ProductService {
 
     List<ProductDTO.ProductResponse> listProduct();
+    ProductDTO.ProductResponse createProduct(ProductDTO.ProductRequest request);
 
 }

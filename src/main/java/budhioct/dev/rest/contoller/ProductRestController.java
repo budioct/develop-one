@@ -3,13 +3,13 @@ package budhioct.dev.rest.contoller;
 import budhioct.dev.dto.ProductDTO;
 import budhioct.dev.rest.config.RestResponse;
 import budhioct.dev.service.ProductService;
+import budhioct.dev.utilities.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +33,22 @@ public class ProductRestController {
         Map<String, List<ProductDTO.ProductResponse>> response = new HashMap<>();
         response.put("products", products);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(
+            path = "/create",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PreAuthorize("hasAnyAuthority('user:read', 'admin:read')")
+    public ResponseEntity<RestResponse.object<ProductDTO.ProductResponse>> createProduct(@RequestBody ProductDTO.ProductRequest request) {
+        ProductDTO.ProductResponse product = productService.createProduct(request);
+        RestResponse.object<ProductDTO.ProductResponse> build = RestResponse.object.<ProductDTO.ProductResponse>builder()
+                .data(product)
+                .status_code(Constants.CREATED)
+                .message(Constants.CREATE_MESSAGE)
+                .build();
+        return new ResponseEntity<>(build, HttpStatus.CREATED);
     }
 
 }
