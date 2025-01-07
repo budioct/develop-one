@@ -1,0 +1,37 @@
+package budhioct.dev.service.impl;
+
+import budhioct.dev.dto.ProductDTO;
+import budhioct.dev.entity.Product;
+import budhioct.dev.repository.ProductRepository;
+import budhioct.dev.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository productRepository;
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO.ProductResponse> listProduct() {
+
+        List<ProductDTO.ProductResponse> list = productRepository.findAll()
+                .stream()
+                .map(ProductDTO::toProductResponse)
+                .toList();
+
+        if (list.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
+        }
+
+        return list;
+    }
+}
