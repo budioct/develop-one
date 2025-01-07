@@ -53,4 +53,16 @@ public class KeranjangServiceImpl implements KeranjangService {
 
         return KeranjangDTO.toKeranjangResponse(ker);
     }
+
+    @Transactional
+    public void removeKeranjang(KeranjangDTO.KeranjangDeleteRequest request) {
+        Product product = productRepository.findFirstById(request.getProduct_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
+
+        Keranjang keranjang = keranjangRepository.findFirstByProductAndId(product, request.getKeranjang_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "keranjang not found"));
+
+        keranjangRepository.delete(keranjang);
+    }
+
 }

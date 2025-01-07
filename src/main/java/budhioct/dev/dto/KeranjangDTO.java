@@ -50,6 +50,16 @@ public class KeranjangDTO {
         private String keterangan;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class KeranjangDeleteRequest {
+        @JsonIgnore
+        private Long keranjang_id;
+        @JsonIgnore
+        private Long product_id;
+    }
+
     public static KeranjangDTO.KeranjangResponse toKeranjangResponse(Keranjang ker) {
         return KeranjangDTO.KeranjangResponse.builder()
                 .id(ker.getId())
