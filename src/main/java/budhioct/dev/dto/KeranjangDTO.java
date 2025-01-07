@@ -2,7 +2,9 @@ package budhioct.dev.dto;
 
 import budhioct.dev.entity.Keranjang;
 import budhioct.dev.entity.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +37,17 @@ public class KeranjangDTO {
         @JsonProperty("is_ready")
         private boolean is_ready;
         private String gambar;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class KeranjangRequest {
+        @JsonIgnore
+        private Long product_id;
+        @NotNull
+        private Integer jumlahPemesanan;
+        private String keterangan;
     }
 
     public static KeranjangDTO.KeranjangResponse toKeranjangResponse(Keranjang ker) {

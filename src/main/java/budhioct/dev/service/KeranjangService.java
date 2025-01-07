@@ -7,4 +7,5 @@ import java.util.List;
 public interface KeranjangService {
 
     List<KeranjangDTO.KeranjangResponse> listKeranjangs();
+    KeranjangDTO.KeranjangResponse createKeranjang(KeranjangDTO.KeranjangRequest request);
 }
