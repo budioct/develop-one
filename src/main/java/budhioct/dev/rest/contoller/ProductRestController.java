@@ -40,7 +40,7 @@ public class ProductRestController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize("hasAnyAuthority('user:read', 'admin:read')")
+    @PreAuthorize("hasAnyAuthority('user:create', 'admin:create')")
     public ResponseEntity<RestResponse.object<ProductDTO.ProductResponse>> createProduct(@RequestBody ProductDTO.ProductRequest request) {
         ProductDTO.ProductResponse product = productService.createProduct(request);
         RestResponse.object<ProductDTO.ProductResponse> build = RestResponse.object.<ProductDTO.ProductResponse>builder()
@@ -55,7 +55,7 @@ public class ProductRestController {
             path = "/{id}/remove",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize("hasAnyAuthority('user:read', 'admin:read')")
+    @PreAuthorize("hasAnyAuthority('user:delete', 'admin:delete')")
     public RestResponse.object<String> removeProduct(@PathVariable(value = "id" ) long id) {
         productService.removeProduct(id);
         return RestResponse.object.<String>builder()
