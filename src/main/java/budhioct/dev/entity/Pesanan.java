@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,17 +18,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EntityListeners({AuditingEntityListener.class})
 @Entity
-@Table(name = "keranjangs")
-public class Keranjang {
+@Table(name = "pesanans")
+public class Pesanan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "jumlah_pemesanan")
-    private Integer jumlahPemesanan;
+    @Column(nullable = false)
+    private String nama;
 
-    @Column(name = "keterangan", columnDefinition = "text")
-    private String keterangan;
+    @Column(nullable = false)
+    private String noMeja;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -37,11 +38,6 @@ public class Keranjang {
     @Column(name = "updated_at", insertable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pesanan_id", referencedColumnName = "id")
-    private Pesanan pesanan;
+    @OneToMany(mappedBy = "pesanan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Keranjang> keranjangs;
 }
