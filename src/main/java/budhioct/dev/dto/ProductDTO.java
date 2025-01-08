@@ -1,7 +1,6 @@
 package budhioct.dev.dto;
 
 import budhioct.dev.entity.Product;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -20,8 +19,7 @@ public class ProductDTO {
         private String kode;
         private String nama;
         private Integer harga;
-        @JsonProperty("is_ready")
-        private boolean is_ready;
+        private Boolean is_ready;
         private String gambar;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;

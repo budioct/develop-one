@@ -3,7 +3,6 @@ package budhioct.dev.dto;
 import budhioct.dev.entity.Keranjang;
 import budhioct.dev.entity.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +17,7 @@ public class KeranjangDTO {
     @Builder
     public static class KeranjangResponse {
         private Long id;
-        @JsonProperty("jumlah_pemesanan")
-        private Integer jumlahPemesanan;
+        private Integer jumlah_pemesanan;
         private String keterangan;
         private ProductResponse products;
         private LocalDateTime createdAt;
@@ -34,8 +32,7 @@ public class KeranjangDTO {
         private String kode;
         private String nama;
         private Integer harga;
-        @JsonProperty("is_ready")
-        private boolean is_ready;
+        private Boolean is_ready;
         private String gambar;
     }
 
@@ -63,7 +60,7 @@ public class KeranjangDTO {
     public static KeranjangDTO.KeranjangResponse toKeranjangResponse(Keranjang ker) {
         return KeranjangDTO.KeranjangResponse.builder()
                 .id(ker.getId())
-                .jumlahPemesanan(ker.getJumlahPemesanan())
+                .jumlah_pemesanan(ker.getJumlahPemesanan())
                 .keterangan(ker.getKeterangan())
                 .products(toProductResponse(ker.getProduct()))
                 .createdAt(ker.getCreatedAt())
