@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,4 +41,12 @@ public class Pesanan {
 
     @OneToMany(mappedBy = "pesanan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Keranjang> keranjangs;
+
+    public void addKeranjang(Keranjang keranjang) {
+        if (keranjangs == null) {
+            keranjangs = new ArrayList<>();
+        }
+        keranjangs.add(keranjang);
+        keranjang.setPesanan(this);
+    }
 }

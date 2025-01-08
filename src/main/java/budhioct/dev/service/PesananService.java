@@ -7,4 +7,5 @@ import java.util.List;
 public interface PesananService {
 
     List<PesananDTO.PesananResponse> listPesanan();
+    PesananDTO.PesananResponse createPesanan(PesananDTO.PesananRequest request);
 }

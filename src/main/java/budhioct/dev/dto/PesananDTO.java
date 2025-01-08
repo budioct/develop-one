@@ -3,6 +3,7 @@ package budhioct.dev.dto;
 import budhioct.dev.entity.Keranjang;
 import budhioct.dev.entity.Pesanan;
 import budhioct.dev.entity.Product;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +46,16 @@ public class PesananDTO {
         private Integer harga;
         private Boolean is_ready;
         private String gambar;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class PesananRequest{
+        private List<Long> keranjang_ids;
+        private String nama;
+        @NotBlank
+        private String noMeja;
     }
 
     public static PesananDTO.PesananResponse toPesananResponse(Pesanan pes){
