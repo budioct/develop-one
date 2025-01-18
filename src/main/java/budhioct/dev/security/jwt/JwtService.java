@@ -1,5 +1,7 @@
 package budhioct.dev.security.jwt;
 
+import budhioct.dev.entity.User;
+import budhioct.dev.security.role.Permission;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -50,11 +52,13 @@ public class JwtService {
             UserDetails userDetails,
             long expirationMs
     ) {
+        User user = (User) userDetails;
+        extraClaims.put("role", user.getRole().name());
+        // extraClaims.put("permission", user.getRole().getPermissions().stream().map(Permission::getPermission).toList());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(getPrivateKey(), SignatureAlgorithm.ES512)
@@ -72,6 +76,14 @@ public class JwtService {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public String extractEmail(String token) {
+        return extractClaim(token, claims -> claims.get("email", String.class));
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     public Date isExtractExpiration(String token) {

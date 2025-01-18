@@ -44,7 +44,7 @@ public class UserDTO {
         @JsonProperty("expires_in_minutes")
         private long expiresIn;
         @JsonProperty("role_is")
-        private Role role;
+        private String role;
         @JsonProperty("access_token")
         private String accessToken;
         @JsonProperty("refresh_token")

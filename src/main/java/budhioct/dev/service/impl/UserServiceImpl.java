@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
         return UserDTO.LoginResponse.builder()
                 .expiresIn(minutes)
-                .role(user.getRole())
+                .role(jwtService.extractRole(jwtToken))
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
 
                     data = UserDTO.LoginResponse.builder()
                             .expiresIn(minutes)
-                            .role(user.getRole())
+                            .role(jwtService.extractRole(accessToken))
                             .accessToken(accessToken)
                             .refreshToken(refreshToken)
                             .build();
