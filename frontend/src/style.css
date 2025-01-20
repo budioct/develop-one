@@ -104,3 +104,13 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+/* Form Validation */
+.is-invalid {
+  border-color: red;
+}
+.text-danger {
+  color: red;
+  font-size: 0.8rem;
+}
+/* Form Validation */
