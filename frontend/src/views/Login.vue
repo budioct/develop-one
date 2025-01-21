@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { useField, useForm } from "vee-validate";
 import * as yup from "yup";
+import { useAuthStore } from "../stores/authStore";
 
 // schema validator used Yup
 const schema = yup.object({
@@ -24,6 +25,7 @@ const { value: email } = useField("email");
 const { value: password } = useField("password");
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 // state for error message from backend
 const apiError = ref("");
@@ -35,8 +37,8 @@ const submit = handleSubmit(async (values) => {
       withCredentials: true,
     });
 
-    // if success login, set token and redirect
-    axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
+    // set token
+    authStore.setToken(response.data.data.access_token); // save token to store pinia state if login is successful
     await router.push("/");
 
   } catch (error) {
