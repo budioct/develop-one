@@ -1,22 +1,49 @@
 import {createRouter, createWebHistory} from "vue-router";
+import {useAuthStore} from "../stores/authStore";
+
+const routes = [
+    {
+        path: '/',
+        component: () => import('../views/Home.vue'),
+        name: 'home',
+        meta: { requiresAuth: true }, // only for user who are login can access
+    },
+    {
+        path: '/login',
+        component: () => import('../views/Login.vue'),
+        name: 'auth-login',
+        meta: { guest: true }, // only for users who are not logged in
+    },
+    {
+        path: '/register',
+        component: () => import('../views/Register.vue'),
+        name: 'auth-register',
+        meta: { guest: true },
+    }
+]
 
 export const router = createRouter({
-    routes: [
-        {
-            path: '/',
-            component: () => import('../views/Home.vue'),
-            name: 'home'
-        },
-        {
-            path: '/login',
-            component: () => import('../views/Login.vue'),
-            name: 'auth-login'
-        },
-        {
-            path: '/register',
-            component: () => import('../views/Register.vue'),
-            name: 'auth-register'
-        }
-    ],
-    history: createWebHistory()
-})
+    history: createWebHistory(),
+    routes: routes
+});
+
+// Middleware for route guards
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore(); // Access the auth store
+
+    // page who needed authentication
+    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+        console.log('Akses ditolak: Anda harus login untuk mengakses halaman ini.');
+        return next({ name: 'auth-login' }); // Redirect ke halaman login
+    }
+
+    // Page for guest users (already logged in cannot access)
+    if (to.meta.guest && authStore.isAuthenticated) {
+        console.log('Akses ditolak: Anda sudah login.');
+        return next({ name: 'home' }); // Redirect to main page
+    }
+
+    // consent access to the page
+    next();
+
+});
