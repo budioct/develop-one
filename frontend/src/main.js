@@ -11,6 +11,7 @@ app.use(pinia);
 app.use(router);
 
 const authStore = useAuthStore();
-authStore.InterceptorToken();
+// authStore.InterceptorToken();
+authStore.InterceptorRefreshToken();
 
 app.mount("#app");
