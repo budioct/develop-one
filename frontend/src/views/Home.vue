@@ -6,6 +6,7 @@ const authStore = useAuthStore();
 // State for showed login info
 const isLoggedIn = authStore.isAuthenticated;
 const token = authStore.token;
+const refreshToken = authStore.refreshToken;
 
 </script>
 
@@ -18,6 +19,8 @@ const token = authStore.token;
     <div v-if="token">
       <h3>Your Token:</h3>
       <p>{{ token }}</p>
+      <h3>Your Refresh Token:</h3>
+      <p>{{ refreshToken }}</p>
     </div>
   </div>
 </template>
