@@ -114,3 +114,10 @@
   font-size: 0.8rem;
 }
 /* Form Validation */
+
+/* Router Link Active */
+.router-link-exact-active {
+  color: #817272 !important;
+  font-weight: bold;
+}
+/* Router Link Active */
