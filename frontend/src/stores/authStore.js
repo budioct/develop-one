@@ -4,7 +4,7 @@ import axios from 'axios';
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: localStorage.getItem("authToken") || null, // collect token from LocalStorage
-        refreshToken: localStorage.getItem("authRefreshToken") || null, // Tambahkan refresh token
+        refreshToken: localStorage.getItem("authRefreshToken") || null,
         isAuthenticated: !!localStorage.getItem("authToken"), // check does token there is
     }),
     actions: {
@@ -49,13 +49,12 @@ export const useAuthStore = defineStore('auth', {
         },
         InterceptorRefreshToken(){
             axios.interceptors.response.use(
-                (response) => response, // Biarkan response berhasil lewat
+                (response) => response,
                 async (error) => {
                     const originalRequest = error.config;
                     if (error.response && error.response.status === 401 && !originalRequest._retry) {
                         originalRequest._retry = true;
                         try {
-                            // Coba refresh token
                             const response = await axios.post(
                                 "http://localhost:8080/api/v1/auth/token/refresh",
                                 {},
@@ -70,9 +69,9 @@ export const useAuthStore = defineStore('auth', {
                             const { access_token, refresh_token } = response.data.data; // Update token
                             this.setToken(access_token, refresh_token);
                             originalRequest.headers["Authorization"] = `Bearer ${token}`;
-                            return axios(originalRequest); // Coba ulang request asli
+                            return axios(originalRequest);
                         } catch (refreshError) {
-                            this.clearToken(); // Jika gagal, logout
+                            this.clearToken();
                             return Promise.reject(refreshError);
                         }
                     }
