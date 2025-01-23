@@ -66,9 +66,9 @@ export const useAuthStore = defineStore('auth', {
                                     }
                                 }
                             );
-                            const { access_token, refresh_token } = response.data.data; // Update token
+                            const { access_token, refresh_token } = response.data.data;
                             this.setToken(access_token, refresh_token);
-                            originalRequest.headers["Authorization"] = `Bearer ${token}`;
+                            originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
                             return axios(originalRequest);
                         } catch (refreshError) {
                             this.clearToken();
