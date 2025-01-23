@@ -9,6 +9,11 @@ const routes = [
         meta: { requiresAuth: true }, // only for user who are login can access
     },
     {
+        path: '/:notFound*',
+        component: () => import('../views/NotFound.vue'),
+        name: 'not-found',
+    },
+    {
         path: '/login',
         component: () => import('../views/Login.vue'),
         name: 'auth-login',
