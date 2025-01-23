@@ -86,7 +86,8 @@ public class UserRestController {
     }
 
     @PostMapping(
-            path = "/logout"
+            path = "/logout",
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     public RestResponse.object<String> logout(HttpServletRequest request,
                                               HttpServletResponse response,
