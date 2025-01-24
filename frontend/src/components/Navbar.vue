@@ -34,28 +34,31 @@ async function logout() {
 </script>
 
 <template>
-
-  <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-    <div v-if="isAuthenticated">
-      <router-link :to="{name: 'home'}" class="navbar-brand">Home</router-link>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarsExample09">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item" v-if="!isAuthenticated">
-          <router-link :to="{name: 'auth-login'}" class="nav-link">Login</router-link>
-        </li>
-        <li class="nav-item" v-if="!isAuthenticated">
-          <router-link :to="{name: 'auth-register'}" class="nav-link">Register</router-link>
-        </li>
-      </ul>
-      <div v-if="isAuthenticated">
-        <div class="form-inline my-2 my-md-0">
+  <div class="container">
+    <div class="row">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+        <div class="collapse navbar-collapse col-7" id="navbarsExample09">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item" v-if="!isAuthenticated">
+              <router-link :to="{name: 'auth-login'}" class="navbar-brand">Login</router-link>
+            </li>
+            <li class="nav-item" v-if="!isAuthenticated">
+              <router-link :to="{name: 'auth-register'}" class="navbar-brand">Register</router-link>
+            </li>
+            <li class="nav-item" v-if="isAuthenticated">
+              <router-link :to="{name: 'home'}" class="navbar-brand">Home</router-link>
+            </li>
+          </ul>
+        </div>
+        <div v-if="isAuthenticated" class="col-2">
+          Cart
+        </div>
+        <div v-if="isAuthenticated" class="col-1">
           <button @click="logout" type="button" class="btn btn-outline-danger">Logout</button>
         </div>
-      </div>
+      </nav>
     </div>
-  </nav>
-
+  </div>
 </template>
 
 <style scoped>
