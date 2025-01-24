@@ -39,7 +39,7 @@ const submit = handleSubmit(async (values) => {
 
     // set token
     authStore.setToken(response.data.data.access_token, response.data.data.refresh_token); // save token to store pinia state if login is successful
-    await router.push("/");
+    await router.push({ name: 'home' });
 
   } catch (error) {
     if (error.response && error.response.data) {

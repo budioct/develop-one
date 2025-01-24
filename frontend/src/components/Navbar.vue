@@ -50,11 +50,15 @@ async function logout() {
             </li>
           </ul>
         </div>
-        <div v-if="isAuthenticated" class="col-2">
-          Cart
+        <div class="nav-item col-2" v-if="isAuthenticated">
+          <router-link class="navbar-brand" to="/salah">
+            Cart
+            <i class="bi bi-cart-plus"></i>&nbsp
+            <span class="badge badge-success ml-2">0</span>
+          </router-link>
         </div>
-        <div v-if="isAuthenticated" class="col-1">
-          <button @click="logout" type="button" class="btn btn-outline-danger">Logout</button>
+        <div class="nav-item col-1" v-if="isAuthenticated">
+          <button @click="logout" type="button" class="btn btn-outline-danger btn-sm">Logout</button>
         </div>
       </nav>
     </div>

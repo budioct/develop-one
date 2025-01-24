@@ -3,7 +3,7 @@ import {useAuthStore} from "../stores/authStore";
 
 const routes = [
     {
-        path: '/',
+        path: '/home',
         component: () => import('../views/Home.vue'),
         name: 'home',
         meta: { requiresAuth: true }, // only for user who are login can access
@@ -24,6 +24,12 @@ const routes = [
         component: () => import('../views/Register.vue'),
         name: 'auth-register',
         meta: { guest: true },
+    },
+    {
+        path: "/",
+        component: () => import("../views/LayoutMain.vue"),
+        name: "layout-main",
+        meta: { requiresAuth: true },
     }
 ]
 

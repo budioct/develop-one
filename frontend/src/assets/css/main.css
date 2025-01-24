@@ -1,3 +1,6 @@
+html {
+    scroll-behavior: smooth;
+}
 #app {
     /*font-family: 'Montserrat', sans-serif;*/
     font-family: 'Quicksand', sans-serif;
@@ -42,7 +45,44 @@
 
 /* Router Link Active */
 .router-link-exact-active {
-    color: #817272 !important;
+    color: #6CB52D !important;
     font-weight: bold;
 }
 /* Router Link Active */
+
+.btn-success {
+    background-color: #6CB52D !important;
+}
+
+.badge-success {
+    background-color: #6CB52D !important;
+}
+
+.card-product {
+    border-radius: 15px;
+}
+
+.card-img-top {
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+}
+
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+}
+
+.breadcrumb-item.active {
+    font-weight: bold;
+    color: black;
+}
+
+.img-fluid {
+    border-radius: 15px;
+}
+
+nav .nav-item:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.7rem;
+    color: black;
+}
