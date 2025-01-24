@@ -59,29 +59,33 @@ const sumbit = handleSubmit(async (values) => {
     </div>
 
     <!-- Email Field -->
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input
-        v-model="email"
-        type="email"
-        id="inputEmail"
-        class="form-control"
-        placeholder="Email address"
-        :class="{ 'is-invalid': errors.email }"
-     />
-    <span v-if="errors.email" class="text-danger">{{ errors.email }}</span>
-
+    <div>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input
+          v-model="email"
+          type="email"
+          id="inputEmail"
+          class="form-control"
+          placeholder="Email address"
+          :class="{ 'is-invalid': errors.email }"
+      />
+      <span v-if="errors.email" class="text-danger">{{ errors.email }}</span>
+    </div>
+    <!-- Email Field -->
     <!-- Password Field -->
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input
-        v-model="password"
-        type="password"
-        id="inputPassword"
-        class="form-control"
-        placeholder="Password"
-        :class="{ 'is-invalid': errors.password }"
-    />
-    <span v-if="errors.password" class="text-danger">{{ errors.password }}</span>
-
+    <div>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input
+          v-model="password"
+          type="password"
+          id="inputPassword"
+          class="form-control"
+          placeholder="Password"
+          :class="{ 'is-invalid': errors.password }"
+      />
+      <span v-if="errors.password" class="text-danger">{{ errors.password }}</span>
+    </div>
+    <!-- Password Field -->
     <!-- role Field -->
     <div class="input-group mb-3">
       <div class="input-group-prepend">
@@ -98,10 +102,12 @@ const sumbit = handleSubmit(async (values) => {
       </select>
       <span v-if="errors.role" class="text-danger">{{ errors.role }}</span>
     </div>
-
-    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" :disabled="isSubmitting">
-      Submit
-    </button>
+    <!-- role Field -->
+    <div>
+      <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" :disabled="isSubmitting">
+        Submit
+      </button>
+    </div>
   </form>
 
 </template>
