@@ -35,6 +35,20 @@ public class ProductRestController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(
+            path = "{id}/detail",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PreAuthorize("hasAnyAuthority('user:create', 'admin:create')")
+    public RestResponse.object<ProductDTO.ProductResponse> detailProduct(@PathVariable(name = "id") Long id){
+        ProductDTO.ProductResponse product = productService.detailProduct(id);
+        return RestResponse.object.<ProductDTO.ProductResponse>builder()
+                .data(product)
+                .status_code(Constants.OK)
+                .message(Constants.ITEM_EXIST_MESSAGE)
+                .build();
+    }
+
     @PostMapping(
             path = "/create",
             produces = MediaType.APPLICATION_JSON_VALUE,

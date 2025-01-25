@@ -35,6 +35,15 @@ public class ProductServiceImpl implements ProductService {
         return list;
     }
 
+    @Transactional(readOnly = true)
+    public ProductDTO.ProductResponse detailProduct(Long id) {
+
+        Product product = productRepository.findFirstById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "product not found"));
+
+        return ProductDTO.toProductResponse(product);
+    }
+
     @Transactional
     public ProductDTO.ProductResponse createProduct(ProductDTO.ProductRequest request) {
         validation.validate(request);
