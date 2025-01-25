@@ -34,7 +34,7 @@ async function logout() {
 </script>
 
 <template>
-  <div class="container">
+<!--  <div class="container">-->
     <div class="row">
       <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
         <div class="collapse navbar-collapse col-7" id="navbarsExample09">
@@ -62,7 +62,7 @@ async function logout() {
         </div>
       </nav>
     </div>
-  </div>
+<!--  </div>-->
 </template>
 
 <style scoped>

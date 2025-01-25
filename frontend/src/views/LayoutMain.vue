@@ -2,13 +2,6 @@
 import Hero from "../components/Hero.vue";
 import ListProducts from "../components/ListProducts.vue";
 import {reactive} from "vue";
-import {useRouter} from "vue-router";
-
-const router = useRouter();
-
-function goTo() {
-  router.push('/salah');
-}
 
 const products = reactive({
   data: [
@@ -43,29 +36,21 @@ const products = reactive({
 
 <template>
   <div class="home">
-    <div class="container">
     <!-- component hero -->
-      <Hero/>
+    <Hero/>
     <!-- component hero -->
-
-      <div class="row mt-4">
-        <div class="col">
-          <h2>Best <strong>Foods</strong></h2>
-        </div>
-        <!--        <div class="col">-->
-        <!--          <button @click="goTo" class="btn btn-success float-right">-->
-        <!--            <i class="bi bi-eye"></i>-->
-        <!--            Lihat Semua-->
-        <!--          </button>-->
-        <!--        </div>-->
+    <div class="row mt-4">
+      <div class="col">
+        <h2>Best <strong>Foods</strong></h2>
       </div>
+    </div>
 
-      <div class="row mb-4">
-        <div class="col-md-4 mt-4" v-for="product in products.data" :key="product.id">
-          <ListProducts :product="product"/>
-        </div>
+    <div class="row mb-4">
+      <div class="col-md-4 mt-4" v-for="product in products.data" :key="product.id">
+        <!-- component list product -->
+        <ListProducts :product="product"/>
+        <!-- component list product -->
       </div>
-
     </div>
   </div>
 </template>

@@ -17,7 +17,7 @@ function goTo(){
 </script>
 
 <template>
-  <div class="container">
+<!--  <div class="container">-->
     <h1>Login Status</h1>
     <p v-if="isLoggedIn">You are logged in! 🎉</p>
     <p v-else>You are not logged in.</p>
@@ -33,7 +33,7 @@ function goTo(){
       <button @click="goTo" type="button" class="btn btn-outline-primary">Got To Application</button>
     </div>
 
-  </div>
+<!--  </div>-->
 </template>
 
 <style scoped>
