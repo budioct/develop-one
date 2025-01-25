@@ -5,7 +5,7 @@ const props = defineProps(['product']);
 const router = useRouter();
 
 function goTo() {
-  router.push('/salah');
+  router.push({ name: 'product-detail', params: { id: props.product.id } });
 }
 
 </script>

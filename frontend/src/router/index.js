@@ -30,6 +30,12 @@ const routes = [
         component: () => import("../views/LayoutMain.vue"),
         name: "layout-main",
         meta: { requiresAuth: true },
+    },
+    {
+        path: '/product/:id',
+        component: () => import('../views/ProductDetail.vue'),
+        name: 'product-detail',
+        meta: { requiresAuth: true },
     }
 ]
 
