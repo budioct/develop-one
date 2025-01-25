@@ -31,10 +31,6 @@ public class KeranjangServiceImpl implements KeranjangService {
                 .map(KeranjangDTO::toKeranjangResponse)
                 .toList();
 
-        if (list.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "keranjang not found");
-        }
-
         return list;
     }
 
