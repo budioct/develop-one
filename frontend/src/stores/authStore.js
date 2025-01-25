@@ -81,3 +81,14 @@ export const useAuthStore = defineStore('auth', {
         }
     },
 });
+
+export const useCartStore = defineStore('cart', {
+    state: () => ({
+        carts: [],
+    }),
+    actions: {
+        setCarts(carts) {
+            this.carts = carts;
+        },
+    },
+});
