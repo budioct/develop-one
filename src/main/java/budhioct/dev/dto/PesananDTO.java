@@ -3,6 +3,7 @@ package budhioct.dev.dto;
 import budhioct.dev.entity.Keranjang;
 import budhioct.dev.entity.Pesanan;
 import budhioct.dev.entity.Product;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,9 @@ public class PesananDTO {
         private String nama;
         private String noMeja;
         private List<KeranjangResponse> keranjangs;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime updatedAt;
     }
 

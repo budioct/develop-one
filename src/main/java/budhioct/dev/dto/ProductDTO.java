@@ -1,6 +1,7 @@
 package budhioct.dev.dto;
 
 import budhioct.dev.entity.Product;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -21,7 +22,9 @@ public class ProductDTO {
         private Integer harga;
         private Boolean is_ready;
         private String gambar;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime updatedAt;
     }
 
