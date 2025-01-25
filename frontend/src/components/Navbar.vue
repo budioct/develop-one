@@ -4,6 +4,8 @@ import {useRouter} from "vue-router";
 import {useAuthStore} from "../stores/authStore.js";
 import axios from "axios";
 
+const props = defineProps(['listCarts']);
+
 const router = useRouter();
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
@@ -51,10 +53,10 @@ async function logout() {
           </ul>
         </div>
         <div class="nav-item col-2" v-if="isAuthenticated">
-          <router-link class="navbar-brand" to="/salah">
+          <router-link class="navbar-brand" :to="{name: 'cart-detail'}">
             Cart
             <i class="bi bi-cart-plus"></i>&nbsp
-            <span class="badge badge-success ml-2">0</span>
+            <span class="badge badge-success ml-2">{{  props ? props.listCarts.length : 0}}</span>
           </router-link>
         </div>
         <div class="nav-item col-1" v-if="isAuthenticated">

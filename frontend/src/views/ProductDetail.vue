@@ -47,7 +47,7 @@ function ordered() {
           },
         }
     );
-    router.push({name: 'home'});
+    router.push({name: 'cart-detail'});
     $toast.success("Masuk ke <b>Dalam Keranjang</b>", {
       type: "success",
       position: "top-right",
@@ -119,7 +119,7 @@ function ordered() {
                 v-model="data.keterangan"
                 type="text"
                 id="information"
-                placeholder="pedas: sedang, tida. minul: es, panas"
+                placeholder="pedas, sedang... minum: dingin, panas"
                 class="form-control"
             />
           </div>
