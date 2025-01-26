@@ -90,5 +90,8 @@ export const useCartStore = defineStore('cart', {
         setCarts(carts) {
             this.carts = carts;
         },
+        clearCarts() {
+            this.carts = null;
+        }
     },
 });

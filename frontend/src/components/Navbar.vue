@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import {useAuthStore} from "../stores/authStore.js";
 import axios from "axios";
@@ -9,6 +9,24 @@ const props = defineProps(['listCarts']);
 const router = useRouter();
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
+let carts = ref([]);
+
+function countCart(data) {
+  carts = data;
+}
+
+onMounted(async () => {
+  await axios.get(`http://localhost:8080/api/v1/keranjangs/fetch`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authStore.token}`,
+        },
+      })
+      .then((response) => countCart(response.data.keranjangs))
+      .catch((error) => console.error(error));
+})
 
 async function logout() {
   try {
@@ -56,7 +74,7 @@ async function logout() {
           <router-link class="navbar-brand" :to="{name: 'cart-detail'}">
             Cart
             <i class="bi bi-cart-plus"></i>&nbsp
-            <span class="badge badge-success ml-2">{{  props ? props.listCarts.length : 0}}</span>
+            <span class="badge badge-success ml-2">{{ props ? props.listCarts.length : carts.length }}</span>
           </router-link>
         </div>
         <div class="nav-item col-1" v-if="isAuthenticated">

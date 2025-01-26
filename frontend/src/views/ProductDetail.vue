@@ -36,9 +36,9 @@ onMounted(async () => {
   }
 });
 
-function ordered() {
+async function ordered() {
   if (data.value.jumlahPemesanan) {
-    axios.post(`http://localhost:8080/api/v1/product/${productId}/keranjangs/create`, data.value,
+    await axios.post(`http://localhost:8080/api/v1/product/${productId}/keranjangs/create`, data.value,
         {
           withCredentials: true,
           headers: {
@@ -47,8 +47,8 @@ function ordered() {
           },
         }
     );
-    router.push({name: 'cart-detail'});
-    $toast.success("Masuk ke <b>Dalam Keranjang</b>", {
+    await router.push({name: 'cart-detail'});
+    $toast.success("Pesanan di masukan <b>Dalam Keranjang</b>", {
       type: "success",
       position: "top-right",
       duration: 6000,

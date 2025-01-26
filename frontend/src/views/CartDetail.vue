@@ -50,15 +50,15 @@ onMounted(async () => {
   }
 });
 
-function cartRemove(productId, cartId) {
-  axios.delete(`http://localhost:8080/api/v1/product/${productId}/keranjangs/${cartId}/remove`,
+async function cartRemove(productId, cartId) {
+  await axios.delete(`http://localhost:8080/api/v1/product/${productId}/keranjangs/${cartId}/remove`,
       {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${authStore.token}`,
         },
-      }).then(() => {
+      }).then(async () => {
     $toast.error("Pesanan Berhasil <b>Di Hapus!!!</b>", {
       type: "error",
       position: "top-right",
@@ -66,7 +66,7 @@ function cartRemove(productId, cartId) {
       dismissible: true
     });
 
-    axios.get("http://localhost:8080/api/v1/keranjangs/fetch",
+    await axios.get("http://localhost:8080/api/v1/keranjangs/fetch",
         {
           withCredentials: true,
           headers: {
@@ -89,10 +89,10 @@ const totalHarga = computed(() => {
   }, 0);
 });
 
-function checkout() {
+async function checkout() {
   if (order.value.nama && order.value.noMeja) {
     order.value.keranjang_ids = carts.value.map(keranjang => keranjang.id);
-    axios.post(`http://localhost:8080/api/v1/pesanans/create`, order.value,
+    await axios.post(`http://localhost:8080/api/v1/pesanans/create`, order.value,
         {
           withCredentials: true,
           headers: {
@@ -101,10 +101,8 @@ function checkout() {
           }
         }
     ).then(() => {
-      carts.value.map(function (cart) {
-        console.info("cart id ", cart.id);
-        console.info("product id ", cart.products.id);
-        return axios.delete(`http://localhost:8080/api/v1/product/${cart.products.id}/keranjangs/${cart.id}/remove`,
+      carts.value.map(async function (cart) {
+        return await axios.delete(`http://localhost:8080/api/v1/product/${cart.products.id}/keranjangs/${cart.id}/remove`,
             {
               withCredentials: true,
               headers: {
@@ -122,7 +120,7 @@ function checkout() {
       });
     }).catch((error) => console.error(error));
   } else {
-    $toast.error("Nama dan Nomor Meja <b>Wajib di isi!!!</b>", {
+    $toast.error("Nama Pemesan dan Nomor Meja <b>Wajib di isi!!!</b>", {
       type: "error",
       position: "top-right",
       duration: 5000,
