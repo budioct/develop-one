@@ -1,13 +1,16 @@
 <script setup>
 import {ref, onMounted, computed} from "vue";
+import {useRouter} from "vue-router";
 import {useAuthStore, useCartStore} from "../stores/authStore";
 import {useToast} from 'vue-toast-notification';
 import axios from "axios";
 
+const router = useRouter();
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const $toast = useToast();
 const carts = ref([]);
+const order = ref({});
 
 function setCarts(data) {
   carts.value = data;
@@ -56,7 +59,7 @@ function cartRemove(productId, cartId) {
           "Authorization": `Bearer ${authStore.token}`,
         },
       }).then(() => {
-    $toast.success("Pesanan Berhasil <b>Di Hapus!!!</b>", {
+    $toast.error("Pesanan Berhasil <b>Di Hapus!!!</b>", {
       type: "error",
       position: "top-right",
       duration: 5000,
@@ -85,6 +88,48 @@ const totalHarga = computed(() => {
     return items + data.products.harga * data.jumlah_pemesanan;
   }, 0);
 });
+
+function checkout() {
+  if (order.value.nama && order.value.noMeja) {
+    order.value.keranjang_ids = carts.value.map(keranjang => keranjang.id);
+    axios.post(`http://localhost:8080/api/v1/pesanans/create`, order.value,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${authStore.token}`,
+          }
+        }
+    ).then(() => {
+      carts.value.map(function (cart) {
+        console.info("cart id ", cart.id);
+        console.info("product id ", cart.products.id);
+        return axios.delete(`http://localhost:8080/api/v1/product/${cart.products.id}/keranjangs/${cart.id}/remove`,
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authStore.token}`,
+              }
+            }).catch((error) => console.error(error));
+      });
+      router.push({name: "order-success"});
+      $toast.success("Pesanan Anda Sedang <b>Di Proses!!!</b>", {
+        type: "success",
+        position: "top-right",
+        duration: 8000,
+        dismissible: true
+      });
+    }).catch((error) => console.error(error));
+  } else {
+    $toast.error("Nama dan Nomor Meja <b>Wajib di isi!!!</b>", {
+      type: "error",
+      position: "top-right",
+      duration: 5000,
+      dismissible: true
+    });
+  }
+}
 
 </script>
 
@@ -159,28 +204,26 @@ const totalHarga = computed(() => {
 
     <div class="row justify-content-end">
       <div class="col-md-4">
-        <form @submit.prevent="" class="mt-4">
+        <form @submit.prevent="checkout" class="mt-4">
           <!-- Nama Pesan Field -->
           <div>
             <label for="nama" class="sr-only">Nama Pemesan</label>
-            <!--                v-model=""-->
             <input
                 type="text"
                 id="nama"
-                placeholder="Nama Pemesan"
                 class="form-control"
+                v-model="order.nama"
             >
           </div>
           <!-- Nama Pesan Field -->
           <!-- No Meja Field -->
           <div>
-            <label for="no_meja" class="sr-only mt-3">Keterangan</label>
-            <!--                v-model=""-->
+            <label for="no_meja" class="sr-only mt-3">Nomor Meja</label>
             <textarea
                 type="text"
                 id="no_meja"
-                placeholder="No Meja Pemesan"
                 class="form-control"
+                v-model="order.noMeja"
             />
           </div>
           <!-- No Meja Field -->

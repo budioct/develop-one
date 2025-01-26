@@ -55,7 +55,7 @@ function ordered() {
       dismissible: true
     });
   } else {
-    $toast.error("<b>Jumlah Pesanan</b> Harus diisi!!!!!", {
+    $toast.warning("<b>Jumlah Pesanan</b> Harus diisi!!!!!", {
       type: "warning",
       position: "top-right",
       duration: 4000,
