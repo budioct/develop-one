@@ -23,7 +23,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     private final PesananRepository pesananRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     List<User> users = List.of(
             new User("budhiocta@test.com", passwordEncoder.encode("password"), Role.USER),
