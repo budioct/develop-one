@@ -59,8 +59,9 @@ async function logout() {
       <nav class="navbar navbar-expand-lg navbar-light bg-light rounded w-100">
         <div class="container-fluid">
           <!-- Brand or Logo -->
+          <div v-if="isAuthenticated">
           <router-link :to="{ name: 'home' }" class="navbar-brand">Lobby</router-link>
-
+          </div>
           <!-- Toggle button for mobile view -->
           <button
               class="navbar-toggler"

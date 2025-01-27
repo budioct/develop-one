@@ -46,7 +46,7 @@ html {
 /* Router Link Active */
 .router-link-exact-active {
     color: #6CB52D !important;
-    font-weight: bold;
+    font-weight: bold !important;
 }
 /* Router Link Active */
 
