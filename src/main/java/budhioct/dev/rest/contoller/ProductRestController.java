@@ -28,8 +28,10 @@ public class ProductRestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @PreAuthorize("hasAnyAuthority('user:read', 'admin:read')")
-    public ResponseEntity<Map<String, List<ProductDTO.ProductResponse>>> listProduct() {
-        List<ProductDTO.ProductResponse> products = productService.listProduct();
+    public ResponseEntity<Map<String, List<ProductDTO.ProductResponse>>> listProduct(
+            @RequestParam(value = "search", required = false) String search
+    ){
+        List<ProductDTO.ProductResponse> products = productService.listProduct(search);
         Map<String, List<ProductDTO.ProductResponse>> response = new HashMap<>();
         response.put("products", products);
         return ResponseEntity.ok(response);

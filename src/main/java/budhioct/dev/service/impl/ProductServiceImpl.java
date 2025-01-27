@@ -21,12 +21,20 @@ public class ProductServiceImpl implements ProductService {
     private final ValidationService validation;
 
     @Transactional(readOnly = true)
-    public List<ProductDTO.ProductResponse> listProduct() {
+    public List<ProductDTO.ProductResponse> listProduct(String search) {
+        List<ProductDTO.ProductResponse> list;
 
-        List<ProductDTO.ProductResponse> list = productRepository.findAll()
-                .stream()
-                .map(ProductDTO::toProductResponse)
-                .toList();
+        if (search != null && !search.isEmpty()) {
+            list = productRepository.searchProducts(search)
+                    .stream()
+                    .map(ProductDTO::toProductResponse)
+                    .toList();
+        } else {
+            list = productRepository.findAll()
+                    .stream()
+                    .map(ProductDTO::toProductResponse)
+                    .toList();
+        }
 
         if (list.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
