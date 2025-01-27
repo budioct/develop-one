@@ -136,4 +136,8 @@ async function logout() {
     margin-bottom: 1rem;
   }
 }
+
+.bg-success {
+  background-color: #6CB52D !important;
+}
 </style>
