@@ -1,37 +1,29 @@
 <script setup>
 import Hero from "../components/Hero.vue";
 import ListProductsCustom from "../components/ListProductsCustom.vue";
-import {reactive} from "vue";
+import {ref, onMounted} from "vue";
+import {useAuthStore} from "../stores/authStore";
+import axios from "axios";
 
-const products = reactive({
-  data: [
-    {
-      id: "1",
-      kode: "K-01",
-      nama: "Sate Ayam",
-      harga: 16000,
-      is_ready: true,
-      gambar: "sate-ayam.jpg"
-    },
-    {
-      id: "2",
-      kode: "K-02",
-      nama: "Nasi Goreng Telur",
-      harga: 14000,
-      is_ready: true,
-      gambar: "nasi-goreng-telor.jpg"
-    },
-    {
-      id: "3",
-      kode: "K-03",
-      nama: "Nasi Rames",
-      harga: 12000,
-      is_ready: true,
-      gambar: "nasi-rames.jpg"
-    }
-  ]
-})
+const authStore = useAuthStore();
+const products = ref([]);
 
+function setProducts(data) {
+  products.value = data;
+}
+
+onMounted(async () => {
+  await axios.get(`http://localhost:8080/api/v1/products/fetch/best`,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authStore.token}`,
+        },
+      })
+      .then((response) => setProducts(response.data.products))
+      .catch((error) => console.error(error));
+});
 </script>
 
 <template>
@@ -41,12 +33,12 @@ const products = reactive({
     <!-- component hero -->
     <div class="row mt-4">
       <div class="col">
-        <h2>Best <strong>Foods</strong></h2>
+        <h2>Terbaik <strong>Makanan</strong></h2>
       </div>
     </div>
 
     <div class="row mb-4">
-      <div class="col-md-4 mt-4" v-for="product in products.data" :key="product.id">
+      <div class="col-md-4 mt-4" v-for="product in products" :key="product.id">
         <!-- component list product -->
         <ListProductsCustom :product="product"/>
         <!-- component list product -->

@@ -84,11 +84,18 @@ html {
 nav .nav-item:hover {
     text-decoration: underline;
     text-underline-offset: 0.7rem;
-    color: black;
+    color: #6CB52D;
 }
 
 nav ol{
     text-decoration: underline;
     text-underline-offset: 0.4rem;
     color: black;
+}
+
+.dejum {
+    text-decoration: underline;
+    text-underline-offset: 0.4rem;
+    color: #6CB52D;
+    font-weight: bold;
 }

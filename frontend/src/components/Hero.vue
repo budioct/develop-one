@@ -16,8 +16,9 @@ function goTo() {
         <div class="col-md-6">
           <div class="d-flex h-100">
             <div class="justify-content-center align-self-center">
-              <h2><strong>Rasakan Nikmatnya Hidangan Favorit,</strong> <br> Langsung dari Genggaman Anda!</h2>
-              <p>Jangan lewatkan kesempatan untuk menikmati makanan lezat pilihan Anda. Dengan sekali sentuh, semua kelezatan tersedia untuk Anda! Pesan sekarang dan rasakan kemudahannya.</p>
+              <h2><b>Warung</b> <span class="dejum">BuDeeee'Jum</span></h2>
+              <h2>Rasakan Nikmatnya <strong>Hidangan Favorit,</strong></h2>
+              <p>Makanan lezat favorit Anda kini hanya sekali suap! Pesan sekarang dan nikmati!!!!!</p>
               <button @click="goTo" class="btn btn-lg btn-success">
                 <i class="bi bi-arrow-right-circle"></i>
                 Pesan
@@ -26,7 +27,7 @@ function goTo() {
           </div>
         </div>
         <div class="col-md-6">
-          <img :src="'../assets/images/hero.jpg'" alt="hero.jpg" width="100%">
+          <img :src="`/assets/images/hero.jpg`" alt="hero.jpg" class="img-fluid" width="100%">
         </div>
       </div>
     </div>
@@ -40,8 +41,9 @@ function goTo() {
         <div class="col-md-6">
           <div class="d-flex h-100">
             <div class="justify-content-center align-self-center">
-              <h2><strong>Rasakan Nikmatnya Hidangan Favorit,</strong> <br> Langsung dari Genggaman Anda!</h2>
-              <p>Jangan lewatkan kesempatan untuk menikmati makanan lezat pilihan Anda. Dengan sekali sentuh, semua kelezatan tersedia untuk Anda! Pesan sekarang dan rasakan kemudahannya.</p>
+              <h2><b>Warung</b> <span class="dejum">BuDeeee'Jum</span></h2>
+              <h2>Rasakan Nikmatnya <strong>Hidangan Favorit,</strong></h2>
+              <p>Makanan lezat favorit Anda kini hanya sekali suap! Pesan sekarang dan nikmati!!!!!</p>
               <button @click="goTo" class="btn btn-lg btn-success">
                 <i class="bi bi-arrow-right-circle"></i>
                 Pesan
