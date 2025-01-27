@@ -48,10 +48,10 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO.ProductResponse> bestProduct() {
 
-        List<Long> favorite = List.of(1L, 2L, 3L);
+        List<String> favorite = List.of("Sate Ayam", "Nasi Goreng", "Es Teh Manis");
 
         List<ProductDTO.ProductResponse> list = favorite.stream()
-                .map(productRepository::findFirstById)
+                .map(productRepository::findFirstByNama)
                 .flatMap(Optional::stream)
                 .map(ProductDTO::toProductResponse)
                 .toList();

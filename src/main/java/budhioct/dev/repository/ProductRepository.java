@@ -16,5 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "lower(p.nama) LIKE lower(concat('%', :search, '%')) OR " +
             "cast(p.harga AS string) LIKE concat('%', :search, '%')")
     List<Product> searchProducts(@Param("search") String search);
+    Optional<Product> findFirstByNama(String nama);
 
 }

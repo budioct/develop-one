@@ -49,4 +49,13 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Keranjang> keranjangs;
+
+    public Product(String kode, String nama, Integer harga, Boolean isReady, String gambar) {
+        this.kode = kode;
+        this.nama = nama;
+        this.harga = harga;
+        this.isReady = isReady;
+        this.gambar = gambar;
+    }
+
 }
