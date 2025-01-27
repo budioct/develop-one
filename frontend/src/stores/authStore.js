@@ -52,7 +52,13 @@ export const useAuthStore = defineStore('auth', {
                 (response) => response,
                 async (error) => {
                     const originalRequest = error.config;
-                    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+                    if (
+                        error.response &&
+                        error.response.status === 401 &&
+                        error.response.data &&
+                        error.response.data.errors === "Token expired" &&
+                        !originalRequest._retry
+                    ) {
                         originalRequest._retry = true;
                         try {
                             const response = await axios.post(
@@ -77,7 +83,7 @@ export const useAuthStore = defineStore('auth', {
                     }
                     return Promise.reject(error);
                 }
-            )
+            );
         }
     },
 });
