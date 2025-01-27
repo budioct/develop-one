@@ -86,3 +86,9 @@ nav .nav-item:hover {
     text-underline-offset: 0.7rem;
     color: black;
 }
+
+nav ol{
+    text-decoration: underline;
+    text-underline-offset: 0.4rem;
+    color: black;
+}

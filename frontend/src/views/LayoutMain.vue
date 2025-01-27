@@ -1,6 +1,6 @@
 <script setup>
 import Hero from "../components/Hero.vue";
-import ListProducts from "../components/ListProducts.vue";
+import ListProductsCustom from "../components/ListProductsCustom.vue";
 import {reactive} from "vue";
 
 const products = reactive({
@@ -48,7 +48,7 @@ const products = reactive({
     <div class="row mb-4">
       <div class="col-md-4 mt-4" v-for="product in products.data" :key="product.id">
         <!-- component list product -->
-        <ListProducts :product="product"/>
+        <ListProductsCustom :product="product"/>
         <!-- component list product -->
       </div>
     </div>

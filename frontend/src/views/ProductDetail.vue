@@ -72,11 +72,11 @@ async function ordered() {
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item">
+            <li @click="router.push({name: 'layout-main'})" style="cursor: pointer;" class="breadcrumb-item">
               Home
             </li>
-            <li class="breadcrumb-item">
-              Product
+            <li @click="router.push({name: 'products'})" style="cursor: pointer;" class="breadcrumb-item">
+              Products
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               Food Order
