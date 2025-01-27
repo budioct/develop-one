@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,20 @@ public class ProductServiceImpl implements ProductService {
         if (list.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
         }
+
+        return list;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO.ProductResponse> bestProduct() {
+
+        List<Long> favorite = List.of(1L, 2L, 3L);
+
+        List<ProductDTO.ProductResponse> list = favorite.stream()
+                .map(productRepository::findFirstById)
+                .flatMap(Optional::stream)
+                .map(ProductDTO::toProductResponse)
+                .toList();
 
         return list;
     }

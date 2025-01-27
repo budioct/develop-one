@@ -38,6 +38,18 @@ public class ProductRestController {
     }
 
     @GetMapping(
+            path = "/fetch/best",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PreAuthorize("hasAnyAuthority('user:read', 'admin:read')")
+    public ResponseEntity<Map<String, List<ProductDTO.ProductResponse>>> bestProduct(){
+        List<ProductDTO.ProductResponse> products = productService.bestProduct();
+        Map<String, List<ProductDTO.ProductResponse>> response = new HashMap<>();
+        response.put("products", products);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(
             path = "{id}/detail",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
