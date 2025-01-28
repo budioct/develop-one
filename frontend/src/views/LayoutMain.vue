@@ -1,7 +1,7 @@
 <script setup>
-import Hero from "../components/Hero.vue";
-import ListProductsCustom from "../components/ListProductsCustom.vue";
-import {ref, onMounted} from "vue";
+import {ref, onMounted, defineAsyncComponent} from "vue";
+const Hero = defineAsyncComponent(() => import("../components/Hero.vue"));
+const ListProductsCustom = defineAsyncComponent(() => import("../components/ListProductsCustom.vue"));
 import {useAuthStore} from "../stores/authStore";
 import axios from "axios";
 

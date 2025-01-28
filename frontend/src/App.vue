@@ -9,7 +9,9 @@ const cartStore = useCartStore();
 <template>
   <div class="container">
     <Navbar :list-carts="cartStore.carts" />
-    <RouterView/>
+    <transition name="fade" mode="out-in">
+      <RouterView/>
+    </transition>
     <Footer/>
   </div>
 </template>

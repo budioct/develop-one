@@ -36,7 +36,7 @@ function goTo() {
     <div class="d-sm-block d-md-none">
       <div class="row mt-4">
         <div class="col-md-6 mb-3">
-          <img src="../../public/assets/images/hero.jpg" width="100%">
+          <img :src="`../public/assets/images/hero.jpg`" width="100%">
         </div>
         <div class="col-md-6">
           <div class="d-flex h-100">
