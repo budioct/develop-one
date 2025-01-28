@@ -117,3 +117,12 @@ nav ol{
 .fade-leave-to {
     opacity: 0;
 }
+
+#nprogress .bar {
+    background: #6CB52D !important;
+}
+
+#nprogress .spinner-icon {
+    border-top-color: #6CB52D !important;
+    border-left-color: #6CB52D !important;
+}

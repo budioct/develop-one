@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import {useAuthStore} from "../stores/authStore";
+import Nprogress from "nprogress";
 
 const routes = [
     {
@@ -78,7 +79,12 @@ router.beforeEach((to, from, next) => {
         return next({ name: 'home' }); // Redirect to main page
     }
 
+    Nprogress.start();
     // consent access to the page
     next();
 
+});
+
+router.afterEach(() => {
+   Nprogress.done();
 });
